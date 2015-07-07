@@ -19,7 +19,7 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback {
         super.onCharacteristicWrite(gatt, characteristic, status);
         if (status == BluetoothGatt.GATT_SUCCESS) {
             if (mBytesOffsetWrite != mTotalByteBufferToWrite.length || mNeedsFinalZeroSizedWrite) {
-                handleChunk(gatt, characteristic, mTotalByteBufferToWrite);
+                //handleChunk(gatt, characteristic, mTotalByteBufferToWrite);
             } else {
                 // TODO signal completion somehow
             }
@@ -32,10 +32,10 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback {
         mBytesOffsetWrite = 0;
         mTotalByteBufferToWrite = bytesToWrite;
         mNeedsFinalZeroSizedWrite = bytesToWrite.length % DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE == 0;
-        handleChunk(gatt, characteristic, mTotalByteBufferToWrite);
+        //handleChunk(gatt, characteristic, mTotalByteBufferToWrite);
     }
 
-    private void handleChunk(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] array) {
+    /*private void handleChunk(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] array) {
         if (mBytesOffsetWrite >= array.length && !mNeedsFinalZeroSizedWrite) {
             return;
         }
@@ -57,7 +57,7 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback {
 
         System.arraycopy(source, offset, destination, 0, bytesToCopy);
         return destination;
-    }
+    }*/
 
     private int _writeByteArrayToCharacteristic(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] array) {
         characteristic.setValue(array);
