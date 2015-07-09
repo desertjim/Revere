@@ -4,8 +4,13 @@ import java.util.Arrays;
 
 public class Splitter {
 
-    public byte[] generateSubArray(byte[] source, byte[] destination, int size, int offset) {
-        int bytesToCopy = Math.min(size, source.length - offset);
+    int mSplitByteSize;
+    public Splitter(int splitByteSize){
+        mSplitByteSize = splitByteSize;
+    }
+
+    public byte[] generateSubArray(byte[] source, byte[] destination, int offset) {
+        int bytesToCopy = Math.min(mSplitByteSize, source.length - offset);
 
         if (destination == null || destination.length != bytesToCopy) {
             destination = new byte[bytesToCopy];
