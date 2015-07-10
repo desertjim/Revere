@@ -5,20 +5,38 @@ import java.util.Arrays;
 public class Splitter {
 
     int mSplitByteSize;
+    int mBytesOffsetWrite = 0;
+    byte[] mTotalByteBufferToWrite;
+    byte[] mByteChunk;
+    boolean mNeedsFinalZeroSizedWrite = false;
+
     public Splitter(int splitByteSize){
         mSplitByteSize = splitByteSize;
     }
 
-    public byte[] generateSubArray(byte[] source, byte[] destination, int offset) {
-        int bytesToCopy = Math.min(mSplitByteSize, source.length - offset);
+    public void setTotalByteArrayPayload(byte[] payload){
+        mTotalByteBufferToWrite = payload;
+        mNeedsFinalZeroSizedWrite = mTotalByteBufferToWrite.length % mSplitByteSize == 0;
+    }
 
-        if (destination == null || destination.length != bytesToCopy) {
-            destination = new byte[bytesToCopy];
-        } else {
-            Arrays.fill(destination, (byte) 0);
+    public byte[] generateSubArray() {
+        int bytesToCopy = Math.min(mSplitByteSize, mTotalByteBufferToWrite.length - mBytesOffsetWrite);
+        if(bytesToCopy > 0 && mNeedsFinalZeroSizedWrite){
+            mNeedsFinalZeroSizedWrite = false;
         }
 
-        System.arraycopy(source, offset, destination, 0, bytesToCopy);
-        return destination;
+        if (mByteChunk == null || mByteChunk.length != bytesToCopy) {
+            mByteChunk = new byte[bytesToCopy];
+        } else {
+            Arrays.fill(mByteChunk, (byte) 0);
+        }
+
+        System.arraycopy(mTotalByteBufferToWrite, mBytesOffsetWrite, mByteChunk, 0, bytesToCopy);
+        mBytesOffsetWrite += bytesToCopy;
+        return mByteChunk;
+    }
+
+    public boolean isCompleted(){
+        return mBytesOffsetWrite != mTotalByteBufferToWrite.length || mNeedsFinalZeroSizedWrite;
     }
 }
