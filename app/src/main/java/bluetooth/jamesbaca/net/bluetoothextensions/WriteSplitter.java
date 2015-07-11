@@ -1,8 +1,9 @@
 package bluetooth.jamesbaca.net.bluetoothextensions;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
-public class Splitter {
+public class WriteSplitter implements Iterator<byte[]> {
 
     int mSplitByteSize;
     int mBytesOffsetWrite = 0;
@@ -10,7 +11,7 @@ public class Splitter {
     byte[] mByteChunk;
     boolean mNeedsFinalZeroSizedWrite = false;
 
-    public Splitter(int splitByteSize){
+    public WriteSplitter(int splitByteSize){
         mSplitByteSize = splitByteSize;
     }
 
@@ -19,7 +20,13 @@ public class Splitter {
         mNeedsFinalZeroSizedWrite = mTotalByteBufferToWrite.length % mSplitByteSize == 0;
     }
 
-    public byte[] generateSubArray() {
+    @Override
+    public boolean hasNext() {
+        return mBytesOffsetWrite != mTotalByteBufferToWrite.length || mNeedsFinalZeroSizedWrite;
+    }
+
+    @Override
+    public byte[] next() {
         int bytesToCopy = Math.min(mSplitByteSize, mTotalByteBufferToWrite.length - mBytesOffsetWrite);
         if(bytesToCopy > 0 && mNeedsFinalZeroSizedWrite){
             mNeedsFinalZeroSizedWrite = false;
@@ -36,7 +43,8 @@ public class Splitter {
         return mByteChunk;
     }
 
-    public boolean isCompleted(){
-        return mBytesOffsetWrite != mTotalByteBufferToWrite.length || mNeedsFinalZeroSizedWrite;
+    @Override
+    public void remove() {
+
     }
 }
