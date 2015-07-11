@@ -6,29 +6,21 @@ import android.bluetooth.BluetoothGattCharacteristic;
 
 import java.util.Arrays;
 
-public class CharacteristicWriteByteArray extends BluetoothGattCallback {
+public class CharacteristicWriteByteArray extends BluetoothGattCallback{
 
-    static final int DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE = 20;
-    int mBytesOffsetWrite = 0;
-    byte[] mTotalByteBufferToWrite;
+    public static final int DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE = 20;
     byte[] mMAXByteChunkToWrite;
-    boolean mNeedsFinalZeroSizedWrite = false;
     Splitter mSplitter;
 
-    public static CharacteristicWriteByteArray generateDefault(){
-        return new CharacteristicWriteByteArray(new Splitter(DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE));
-    }
+    public CharacteristicWriteByteArray() {
 
-    public CharacteristicWriteByteArray(Splitter splitter) {
-        mSplitter = splitter;
     }
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-        super.onCharacteristicWrite(gatt, characteristic, status);
         if (status == BluetoothGatt.GATT_SUCCESS) {
-            if (mBytesOffsetWrite != mTotalByteBufferToWrite.length || mNeedsFinalZeroSizedWrite) {
-                handleChunk(gatt, characteristic, mTotalByteBufferToWrite);
+            if (!mSplitter.isCompleted()) {
+                handleChunk(gatt, characteristic);
             } else {
                 // TODO signal completion somehow
             }
@@ -37,27 +29,18 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback {
         }
     }
 
-    private void handleChunk(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] array) {
-        if (mBytesOffsetWrite >= array.length && !mNeedsFinalZeroSizedWrite) {
-            return;
-        }
-        mMAXByteChunkToWrite = mSplitter.generateSubArray(array, mMAXByteChunkToWrite, mBytesOffsetWrite);
-        mBytesOffsetWrite += _writeByteArrayToCharacteristic(gatt, characteristic, mMAXByteChunkToWrite);
-        if (mMAXByteChunkToWrite.length == 0) {
-            mNeedsFinalZeroSizedWrite = false;
-        }
+    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Splitter splitter){
+        mSplitter = splitter;
+        handleChunk(gatt, characteristic);
     }
 
-    public void writeByteArrayToCharacteristic(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] bytesToWrite) {
-        mBytesOffsetWrite = 0;
-        mTotalByteBufferToWrite = bytesToWrite;
-        mNeedsFinalZeroSizedWrite = bytesToWrite.length % DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE == 0;
-        handleChunk(gatt, characteristic, mTotalByteBufferToWrite);
+    private void handleChunk(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+        mMAXByteChunkToWrite = mSplitter.generateSubArray();
+        _writeByteArrayToCharacteristic(gatt, characteristic, mMAXByteChunkToWrite);
     }
 
-    private int _writeByteArrayToCharacteristic(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] array) {
+    private void _writeByteArrayToCharacteristic(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, byte[] array) {
         characteristic.setValue(array);
         gatt.writeCharacteristic(characteristic);
-        return array.length;
     }
 }
