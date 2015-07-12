@@ -4,13 +4,13 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 
-import java.util.Arrays;
+import java.util.Iterator;
 
 public class CharacteristicWriteByteArray extends BluetoothGattCallback{
 
     public static final int DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE = 20;
     byte[] mMAXByteChunkToWrite;
-    Splitter mSplitter;
+    Iterator<byte[]> mSplitter;
 
     public CharacteristicWriteByteArray() {
 
@@ -19,8 +19,8 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback{
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
-            if (!mSplitter.isCompleted()) {
-                handleChunk(gatt, characteristic);
+            if (!mSplitter.hasNext()) {
+                writeChunk(gatt, characteristic);
             } else {
                 // TODO signal completion somehow
             }
@@ -29,13 +29,13 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback{
         }
     }
 
-    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Splitter splitter){
+    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Iterator<byte[]> splitter){
         mSplitter = splitter;
-        handleChunk(gatt, characteristic);
+        writeChunk(gatt, characteristic);
     }
 
-    private void handleChunk(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        mMAXByteChunkToWrite = mSplitter.generateSubArray();
+    private void writeChunk(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+        mMAXByteChunkToWrite = mSplitter.next();
         _writeByteArrayToCharacteristic(gatt, characteristic, mMAXByteChunkToWrite);
     }
 
