@@ -28,7 +28,7 @@ public class WriteSplitter implements Iterator<byte[]> {
     @Override
     public byte[] next() {
         int bytesToCopy = Math.min(mSplitByteSize, mTotalByteBufferToWrite.length - mBytesOffsetWrite);
-        if(bytesToCopy > 0 && mNeedsFinalZeroSizedWrite){
+        if(bytesToCopy == 0 && mNeedsFinalZeroSizedWrite){
             mNeedsFinalZeroSizedWrite = false;
         }
 
@@ -37,7 +37,6 @@ public class WriteSplitter implements Iterator<byte[]> {
         } else {
             Arrays.fill(mByteChunk, (byte) 0);
         }
-
         System.arraycopy(mTotalByteBufferToWrite, mBytesOffsetWrite, mByteChunk, 0, bytesToCopy);
         mBytesOffsetWrite += bytesToCopy;
         return mByteChunk;
