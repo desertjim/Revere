@@ -11,7 +11,7 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback{
     public static final int DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE = 20;
     byte[] mMAXByteChunkToWrite;
     Iterator<byte[]> mSplitter;
-
+    Progress mProgress;
     public CharacteristicWriteByteArray() {
 
     }
@@ -19,17 +19,19 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback{
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
+            mProgress.onProgress(gatt, characteristic, status, mMAXByteChunkToWrite);
             if (!mSplitter.hasNext()) {
                 writeChunk(gatt, characteristic);
             } else {
-                // TODO signal completion somehow
+               mProgress.onComplete();
             }
         } else {
-            throw new RuntimeException("Characteristic Write Failed: " + status);
+            mProgress.onError(new RuntimeException("Characteristic Write Failed: " + status));
         }
     }
 
-    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Iterator<byte[]> splitter){
+    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Iterator<byte[]> splitter, Progress progress){
+        mProgress = progress;
         mSplitter = splitter;
         writeChunk(gatt, characteristic);
     }
