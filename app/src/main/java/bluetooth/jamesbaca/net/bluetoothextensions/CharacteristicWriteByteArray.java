@@ -20,7 +20,7 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback{
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
             mProgress.onProgress(gatt, characteristic, status, mMAXByteChunkToWrite);
-            if (!mSplitter.hasNext()) {
+            if (mSplitter.hasNext()) {
                 writeChunk(gatt, characteristic);
             } else {
                mProgress.onComplete();
