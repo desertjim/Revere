@@ -6,12 +6,12 @@ import android.bluetooth.BluetoothGattCharacteristic;
 
 import java.util.Iterator;
 
-public class CharacteristicWriteByteArray extends BluetoothGattCallback{
+public class CharacteristicWriteByteArray extends BluetoothGattCallback {
 
-    public static final int DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE = 20;
     byte[] mMAXByteChunkToWrite;
     Iterator<byte[]> mSplitter;
     Progress mProgress;
+
     public CharacteristicWriteByteArray() {
 
     }
@@ -23,14 +23,14 @@ public class CharacteristicWriteByteArray extends BluetoothGattCallback{
             if (mSplitter.hasNext()) {
                 writeChunk(gatt, characteristic);
             } else {
-               mProgress.onComplete();
+                mProgress.onComplete();
             }
         } else {
             mProgress.onError(new RuntimeException("Characteristic Write Failed: " + status));
         }
     }
 
-    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Iterator<byte[]> splitter, Progress progress){
+    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Iterator<byte[]> splitter, Progress progress) {
         mProgress = progress;
         mSplitter = splitter;
         writeChunk(gatt, characteristic);

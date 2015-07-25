@@ -8,7 +8,6 @@ import bluetooth.jamesbaca.net.bluetoothextensions.helpers.ReadSplitter;
 
 public class CharacteristicReadByteArray extends BluetoothGattCallback {
 
-    public static final int DEFAULT_BTLE_MAX_BYTE_ARRAY_SIZE = 20;
     byte[] mMAXByteChunkToWrite;
     ReadSplitter mSplitter;
     Progress mProgress;
