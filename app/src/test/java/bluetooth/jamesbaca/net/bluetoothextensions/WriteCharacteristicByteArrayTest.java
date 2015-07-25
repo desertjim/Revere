@@ -15,6 +15,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Arrays;
 
 import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.CharacteristicWriteByteArray;
+import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.Progress;
 import bluetooth.jamesbaca.net.bluetoothextensions.helpers.WriteSplitter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
