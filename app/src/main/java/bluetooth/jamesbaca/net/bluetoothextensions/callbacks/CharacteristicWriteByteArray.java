@@ -1,10 +1,12 @@
-package bluetooth.jamesbaca.net.bluetoothextensions;
+package bluetooth.jamesbaca.net.bluetoothextensions.callbacks;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 
 import java.util.Iterator;
+
+import bluetooth.jamesbaca.net.bluetoothextensions.Progress;
 
 public class CharacteristicWriteByteArray extends BluetoothGattCallback{
 

@@ -1,4 +1,4 @@
-package bluetooth.jamesbaca.net.bluetoothextensions;
+package bluetooth.jamesbaca.net.bluetoothextensions.callbacks;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
