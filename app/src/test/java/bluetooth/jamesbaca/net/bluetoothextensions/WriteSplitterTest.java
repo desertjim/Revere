@@ -1,10 +1,10 @@
 package bluetooth.jamesbaca.net.bluetoothextensions;
 
-import android.util.Log;
-
 import org.junit.Test;
 
 import java.util.Arrays;
+
+import bluetooth.jamesbaca.net.bluetoothextensions.helpers.WriteSplitter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

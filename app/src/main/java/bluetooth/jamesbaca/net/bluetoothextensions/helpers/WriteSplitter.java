@@ -1,4 +1,4 @@
-package bluetooth.jamesbaca.net.bluetoothextensions;
+package bluetooth.jamesbaca.net.bluetoothextensions.helpers;
 
 import java.util.Arrays;
 import java.util.Iterator;

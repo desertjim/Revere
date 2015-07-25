@@ -1,4 +1,4 @@
-package bluetooth.jamesbaca.net.bluetoothextensions;
+package bluetooth.jamesbaca.net.bluetoothextensions.helpers;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

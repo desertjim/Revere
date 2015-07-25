@@ -4,9 +4,7 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Iterator;
+import bluetooth.jamesbaca.net.bluetoothextensions.helpers.ReadSplitter;
 
 public class CharacteristicReadByteArray extends BluetoothGattCallback {
 

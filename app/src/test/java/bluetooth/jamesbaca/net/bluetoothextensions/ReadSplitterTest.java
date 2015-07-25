@@ -1,9 +1,8 @@
 package bluetooth.jamesbaca.net.bluetoothextensions;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+
+import bluetooth.jamesbaca.net.bluetoothextensions.helpers.ReadSplitter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
