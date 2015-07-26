@@ -27,8 +27,9 @@ public class CharacteristicReadByteArray extends BluetoothGattCallback {
         }
     }
 
-    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, Progress progress) {
+    public void start(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, ReadSplitter splitter, Progress progress) {
         mProgress = progress;
+        mSplitter = splitter;
         readChunk(gatt, characteristic);
     }
 
