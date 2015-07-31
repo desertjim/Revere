@@ -13,6 +13,7 @@ import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 
 import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.CharacteristicReadByteArray;
+import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.PluggableGattCallback;
 import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.Progress;
 import bluetooth.jamesbaca.net.bluetoothextensions.helpers.ReadSplitter;
 
@@ -25,6 +26,8 @@ public class BluetoothPluggableTest {
 
     @Test
     public void BluetoothPluggableTest(){
+        PluggableGattCallback callback = new PluggableGattCallback();
+        callback.setSubCallback(new PluggableGattCallback());
 
     }
 
