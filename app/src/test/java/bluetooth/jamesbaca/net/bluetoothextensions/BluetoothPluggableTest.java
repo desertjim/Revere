@@ -3,9 +3,11 @@ package bluetooth.jamesbaca.net.bluetoothextensions;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.os.Build;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
@@ -18,6 +20,9 @@ import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.PluggableGattCallba
 import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.Progress;
 import bluetooth.jamesbaca.net.bluetoothextensions.helpers.ReadSplitter;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
@@ -31,7 +36,7 @@ public class BluetoothPluggableTest extends PluggableGattCallback{
         PluggableGattCallback callback = new PluggableGattCallback();
         PluggableGattCallback callback1 = new PluggableGattCallback();
         callback.setSubCallback(callback1);
-        assert callback.getSubCallback().equals(callback1);
+        assertThat("Callback isn't the same instance and should be", callback.getSubCallback(), CoreMatchers.<BluetoothGattCallback>equalTo(callback1));
     }
 
     @Test
@@ -41,6 +46,6 @@ public class BluetoothPluggableTest extends PluggableGattCallback{
         PluggableGattCallback callback2 = new PluggableGattCallback();
         callback.setSubCallback(callback1);
         callback.setSubCallback(callback2);
-        assert callback.getSubCallback().equals(callback2);
+        assertThat("Callback isn't the same instance and should be", callback.getSubCallback(), CoreMatchers.<BluetoothGattCallback>equalTo(callback2));
     }
 }
