@@ -22,13 +22,15 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class BluetoothPluggableTest {
+public class BluetoothPluggableTest extends PluggableGattCallback{
+
 
     @Test
-    public void BluetoothPluggableTest(){
+    public void TestSettingCallback(){
         PluggableGattCallback callback = new PluggableGattCallback();
-        callback.setSubCallback(new PluggableGattCallback());
-
+        PluggableGattCallback callback1 = new PluggableGattCallback();
+        callback.setSubCallback(callback1);
+        assert callback.getSubCallback().equals(callback1);
     }
 
 }
