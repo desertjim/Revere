@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.CharacteristicReadByteArray;
 import bluetooth.jamesbaca.net.bluetoothextensions.callbacks.PluggableGattCallback;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+@Config(manifest= Config.NONE)
 public class BluetoothPluggableTest extends PluggableGattCallback{
 
     @Test
