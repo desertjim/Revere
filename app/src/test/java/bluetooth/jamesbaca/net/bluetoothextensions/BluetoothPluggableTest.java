@@ -24,7 +24,6 @@ import static org.mockito.Mockito.mock;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BluetoothPluggableTest extends PluggableGattCallback{
 
-
     @Test
     public void TestSettingCallback(){
         PluggableGattCallback callback = new PluggableGattCallback();
@@ -33,4 +32,13 @@ public class BluetoothPluggableTest extends PluggableGattCallback{
         assert callback.getSubCallback().equals(callback1);
     }
 
+    @Test
+    public void TestChangingCallback() {
+        PluggableGattCallback callback = new PluggableGattCallback();
+        PluggableGattCallback callback1 = new PluggableGattCallback();
+        PluggableGattCallback callback2 = new PluggableGattCallback();
+        callback.setSubCallback(callback1);
+        callback.setSubCallback(callback2);
+        assert callback.getSubCallback().equals(callback2);
+    }
 }
