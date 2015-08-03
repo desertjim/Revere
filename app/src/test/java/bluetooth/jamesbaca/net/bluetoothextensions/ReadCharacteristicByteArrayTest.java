@@ -32,7 +32,6 @@ public class ReadCharacteristicByteArrayTest {
 
     @Test
     public void ReadCharacteristicByteArrayTest(){
-        BluetoothDevice device = mock(BluetoothDevice.class);
         final BluetoothGatt gatt = mock(BluetoothGatt.class);
         final BluetoothGattCharacteristic characteristic = mock(BluetoothGattCharacteristic.class);
         final CharacteristicReadByteArray array = new CharacteristicReadByteArray();
